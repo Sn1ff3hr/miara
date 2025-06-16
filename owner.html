@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Entry | Business Owner Inventory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* Simplified & decluttered styles */
+    :root {
+      --primary: #5028e0;
+      --accent: #00d0b3;
+      --background: #f8f8fd;
+      --surface: #fff;
+      --text: #1a1a1a;
+      --card-radius: 1em;
+      --shadow: 0 4px 20px rgba(80,40,224,0.06);
+      --font-size: clamp(0.9rem, 1.5vw, 1rem);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      font-size: var(--font-size);
+    }
+    h1 {
+      text-align: center;
+      margin: 20px;
+      font-size: 1.5rem;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 2em;
+      background: var(--surface);
+      margin: 0 auto 30px;
+      padding: 1.5em;
+      border-radius: var(--card-radius);
+      max-width: 900px;
+      box-shadow: var(--shadow);
+    }
+    .form-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+    }
+    label {
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2em;
+    }
+    input, textarea {
+      padding: 0.7em;
+      font-size: 0.95em;
+      border: 1px solid #ccc;
+      border-radius: 0.5em;
+      background: #fff;
+    }
+    .help {
+      font-size: 0.85em;
+      color: #555;
+      margin: 0;
+    }
+    .image-box {
+      background: #f2f7fe;
+      border-radius: 1em;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 1px 8px rgba(80,40,224,0.05);
+    }
+    .image-preview {
+      width: 100%;
+      height: 200px;
+      background: #d6eaff;
+      border-radius: 0.8em;
+      margin-bottom: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      color: #99aabb;
+    }
+    .image-actions {
+      display: flex;
+      gap: 1em;
+    }
+    .img-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 2.3em;
+      height: 2.3em;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .form-actions {
+      display: flex;
+      gap: 1em;
+      justify-content: center;
+      margin: 1em 0;
+    }
+    .main-btn {
+      background: var(--accent);
+      color: #fff;
+      font-size: 1em;
+      border: none;
+      border-radius: 0.5em;
+      padding: 0.6em 1.8em;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 auto;
+      box-shadow: var(--shadow);
+    }
+    th, td {
+      padding: 0.8em;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9em;
+    }
+    th {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Responsive: move image-box above fields on mobile */
+    @media (max-width: 600px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      .image-box {
+        order: -1;
+        margin-bottom: 1.5em;
+      }
+      .form-fields {
+        order: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Product Entry</h1>
+  <form id="productForm" autocomplete="off">
+    <div class="form-fields">
+      <label>
+        Asset ID
+        <input type="text" id="assetId" placeholder="e.g. SKU-01" required>
+        <div class="help">Example: SKU-01, APPLE-01, or any code that helps you.</div>
+      </label>
+      <label>
+        Product Name
+        <input type="text" id="productName" placeholder="e.g. Apples" required>
+        <div class="help">Type the product name. Example: Apples.</div>
+      </label>
+      <label>
+        Description
+        <textarea id="description" placeholder="e.g. Red, large, 1kg"></textarea>
+        <div class="help">Describe the product in simple words.</div>
+      </label>
+      <label>
+        Quantity
+        <input type="number" id="quantity" placeholder="e.g. 10" required>
+        <div class="help">Number of units you bought. Example: 10.</div>
+      </label>
+      <label>
+        Subtotal Paid
+        <input type="number" id="subtotal" step="0.01" placeholder="e.g. 20.00" required>
+        <div class="help">How much you paid, no taxes. Example: 20.00</div>
+      </label>
+      <label>
+        VAT %
+        <input type="number" id="vat" step="0.01" placeholder="e.g. 12" required>
+        <div class="help">Type tax %, like 12.</div>
+      </label>
+      <label>
+        Total Amount Paid
+        <input type="number" id="totalPaid" step="0.01" placeholder="calculated" readonly>
+        <div class="help">Calculated automatically.</div>
+      </label>
+      <label>
+        Unit Price
+        <input type="number" id="unitPrice" step="0.01" placeholder="calculated" readonly>
+        <div class="help">Calculated automatically.</div>
+      </label>
+      <label>
+        Future Selling Price per Unit
+        <input type="number" id="futureSelling" step="0.01" placeholder="e.g. 3.00">
+        <div class="help">Your sale price per item, no tax. Example: 3.00</div>
+      </label>
+      <label>
+        Future VAT %
+        <input type="number" id="futureVat" step="0.01" placeholder="e.g. 12">
+        <div class="help">Type tax %, like 12.</div>
+      </label>
+      <label>
+        Future Earnings
+        <input type="number" id="futureEarnings" step="0.01" placeholder="calculated" readonly>
+        <div class="help">Calculated automatically.</div>
+      </label>
+      <label>
+        % Earnings
+        <input type="number" id="grossMargin" step="0.01" placeholder="calculated" readonly>
+        <div class="help">Calculated automatically.</div>
+      </label>
+    </div>
+    <div class="image-box">
+      <div class="image-preview" id="imgPreview">📷</div>
+      <div class="image-actions">
+        <button type="button" class="img-btn" id="cameraBtn">📸</button>
+        <button type="button" class="img-btn" id="scanBtn">🔳</button>
+        <button type="button" class="img-btn" id="printBtn">🖨️</button>
+      </div>
+      <input type="file" accept="image/*" id="uploadImg" style="display:none">
+      <div class="help" id="imgHelp">To print product details, fill all the fields.</div>
+    </div>
+  </form>
+  <div class="form-actions">
+    <button type="submit" class="main-btn" form="productForm" id="addBtn">Add to Inventory</button>
+    <button class="main-btn" id="ledgerBtn">Update General Ledger</button>
+  </div>
+  <table id="inventoryTable">
+    <thead>
+      <tr>
+        <th>Asset ID</th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Subtotal Paid</th>
+        <th>VAT %</th>
+        <th>Total Paid</th>
+        <th>Unit Price</th>
+        <th>Future Selling</th>
+        <th>Future VAT %</th>
+        <th>Future Earnings</th>
+        <th>% Earnings</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script>
+    function toFloat(v){return parseFloat(v)||0}
+    function updateCalculatedFields(){ const s=toFloat(document.getElementById('subtotal').value); const v=toFloat(document.getElementById('vat').value)/100; const q=toFloat(document.getElementById('quantity').value); const f=toFloat(document.getElementById('futureSelling').value); document.getElementById('totalPaid').value=(s*(1+v)||'').toFixed(2); document.getElementById('unitPrice').value=(q?s/q:0||'').toFixed(2); document.getElementById('futureEarnings').value=(f*q||'').toFixed(2); const up=toFloat(document.getElementById('unitPrice').value); document.getElementById('grossMargin').value=(up?((f-up)/up*100):0||'').toFixed(2); }
+    ['subtotal','vat','quantity','futureSelling'].forEach(id=>{document.getElementById(id).addEventListener('input',updateCalculatedFields);});
+    document.getElementById('productForm').onsubmit=function(e){e.preventDefault();updateCalculatedFields();const row=document.createElement('tr');row.innerHTML=['assetId','productName','quantity','subtotal','vat','totalPaid','unitPrice','futureSelling','futureVat','futureEarnings','grossMargin'].map(id=>`<td>${document.getElementById(id).value||'-'}</td>`).join('');document.querySelector('#inventoryTable tbody').appendChild(row);this.reset();updateCalculatedFields();document.getElementById('imgPreview').innerHTML='📷';};
+    document.getElementById('cameraBtn').onclick=()=>document.getElementById('uploadImg').click(); document.getElementById('uploadImg').onchange=function(){const r=new FileReader();r.onload=e=>document.getElementById('imgPreview').innerHTML=`<img src="${e.target.result}" style="width:100%;border-radius:0.5em;">`;r.readAsDataURL(this.files[0]);};
+    document.getElementById('scanBtn').onclick=()=>alert('Scanner feature coming soon!'); document.getElementById('printBtn').onclick=()=>window.print();
+  </script>
+</body>
+</html>
