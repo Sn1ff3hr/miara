@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consumer Order Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="lang-switch" onclick="toggleLang()" id="langBtn">ES</div>
+  <h2 id="title">Order App</h2>
+
+  <div class="carousel-container">
+    <button class="arrow arrow-left" onclick="scrollCarousel(-1)">&lt;</button>
+    <div class="product-grid" id="productGrid"></div>
+    <button class="arrow arrow-right" onclick="scrollCarousel(1)">&gt;</button>
+  </div>
+
+  <div class="order-summary">
+    <h3 id="summaryTitle">Order List</h3>
+    <ul id="orderList"></ul>
+    <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+    <p><strong>VAT:</strong> $<span id="vat">0.00</span></p>
+    <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+  </div>
+
+  <button class="btn" onclick="submitEncryptedOrder()" id="submitBtn">PAY</button>
+</div>
+
+<!-- Zoom Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-content" onclick="event.stopPropagation();">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <img id="modalImage" src="" alt="Zoomed product" />
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
