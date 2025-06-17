@@ -103,8 +103,8 @@
     .order-summary ul {
       list-style: none;
       padding: 0;
-      margin: 0 0 1rem 0;
-      min-height: 12rem;
+      margin: 0 0 2.67rem 0; /* Changed 1rem to 2.67rem */
+      min-height: 8.5rem;
       overflow-y: auto;
     }
     .order-summary li {
