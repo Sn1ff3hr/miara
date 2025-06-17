@@ -104,6 +104,8 @@
       list-style: none;
       padding: 0;
       margin: 0 0 1rem 0;
+      min-height: 8.5rem;
+      overflow-y: auto;
     }
     .order-summary li {
       display: flex;
