@@ -1,9 +1,9 @@
 const products = [
-    { id: 'p1', name: 'Product One', price: 12.00, qty: 0, img: 'https://via.placeholder.com/150' },
-    { id: 'p2', name: 'Product Two', price: 20.00, qty: 0, img: 'https://via.placeholder.com/150' },
-    { id: 'p3', name: 'Product Three', price: 18.50, qty: 0, img: 'https://via.placeholder.com/150' },
-    { id: 'p4', name: 'Product Four', price: 7.25, qty: 0, img: 'https://via.placeholder.com/150' },
-    { id: 'p5', name: 'Product Five', price: 22.75, qty: 0, img: 'https://via.placeholder.com/150' },
+    { id: 'p1', name: 'Product One', name_es: 'Producto Uno', price: 12.00, qty: 0, img: 'https://via.placeholder.com/150' },
+    { id: 'p2', name: 'Product Two', name_es: 'Producto Dos', price: 20.00, qty: 0, img: 'https://via.placeholder.com/150' },
+    { id: 'p3', name: 'Product Three', name_es: 'Producto Tres', price: 18.50, qty: 0, img: 'https://via.placeholder.com/150' },
+    { id: 'p4', name: 'Product Four', name_es: 'Producto Cuatro', price: 7.25, qty: 0, img: 'https://via.placeholder.com/150' },
+    { id: 'p5', name: 'Product Five', name_es: 'Producto Cinco', price: 22.75, qty: 0, img: 'https://via.placeholder.com/150' },
   ];
 
   function toggleLang() {
@@ -11,7 +11,10 @@ const products = [
     const title = document.getElementById('title');
     const pay = document.getElementById('submitBtn');
     const sum = document.getElementById('summaryTitle');
-    if (btn.textContent === 'ES') {
+    // Determine target language BEFORE changing button text
+    const isSwitchingToSpanish = btn.textContent === 'ES';
+
+    if (isSwitchingToSpanish) {
       btn.textContent = 'EN';
       title.textContent = 'Aplicación de Pedido';
       pay.textContent = 'PAGAR';
@@ -22,22 +25,27 @@ const products = [
       pay.textContent = 'PAY';
       sum.textContent = 'Order List';
     }
+    // Re-render products to apply language changes to product names and Qty
+    renderProducts();
   }
 
   function renderProducts() {
     const grid = document.getElementById('productGrid');
     grid.innerHTML = '';
+    const langBtn = document.getElementById('langBtn');
+    const isSpanish = langBtn.textContent === 'EN'; // Because 'EN' means Spanish is active
+
     products.forEach((p, i) => {
       const card = document.createElement('div');
       card.className = 'product-card';
       card.innerHTML = `
-        <img src="${p.img}" alt="${p.name}" onclick="openModal('${p.img}')" />
-        <div>${p.name}</div>
+        <img src="${p.img}" alt="${isSpanish ? p.name_es : p.name}" onclick="openModal('${p.img}')" />
+        <div>${isSpanish ? p.name_es : p.name}</div>
         <div class="product-controls">
           <button class="btn-remove" onclick="updateQty(${i}, -1)">-</button>
           <button class="btn-add" onclick="updateQty(${i}, 1)">+</button>
         </div>
-        <div>Qty: ${p.qty}</div>
+        <div>${isSpanish ? 'Cant.' : 'Qty:'} ${p.qty}</div>
         <div>$${p.price.toFixed(2)}</div>
       `;
       grid.appendChild(card);
@@ -61,13 +69,16 @@ const products = [
     let subtotal = 0;
     let vatAmt = 0;
     list.innerHTML = '';
+    const langBtn = document.getElementById('langBtn');
+    const isSpanish = langBtn.textContent === 'EN';
+
     products.forEach(p => {
       if (p.qty > 0) {
         const totalItem = p.qty * p.price;
         subtotal += totalItem;
         vatAmt += totalItem * 0.12;
         const li = document.createElement('li');
-        li.innerHTML = `<span>${p.name} x ${p.qty}</span><span>$${totalItem.toFixed(2)}</span>`;
+        li.innerHTML = `<span>${isSpanish ? p.name_es : p.name} x ${p.qty}</span><span>$${totalItem.toFixed(2)}</span>`;
         list.appendChild(li);
       }
     });
